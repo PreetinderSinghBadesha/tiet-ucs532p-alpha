@@ -1,4 +1,7 @@
+
 import './Documentation.css'
+import FaceUpload from './FaceUpload';
+import LiveFaceDetect from './LiveFaceDetect';
 
 const sections = [
   {
@@ -324,6 +327,17 @@ export default function Documentation() {
           AI-Based Skin Condition Analysis Using Classical Computer Vision &amp; Machine Learning
         </p>
       </header>
+
+      {/* ── Face Detection Demo ─────────────────────── */}
+      <section className="doc-section" id="face-demo">
+        <div className="doc-section-header">
+          <span className="doc-num">Demo</span>
+          <h2>Try Face Detection</h2>
+        </div>
+        <div className="doc-section-content">
+          <LiveFaceDetect />
+        </div>
+      </section>
 
       {/* ── TOC ─────────────────────────────────────── */}
       <nav className="doc-toc">

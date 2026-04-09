@@ -27,7 +27,9 @@
   overflow-x: hidden;
 }
 
-.doc-page *, .doc-page *::before, .doc-page *::after {
+.doc-page *,
+.doc-page *::before,
+.doc-page *::after {
   box-sizing: border-box;
 }
 
@@ -53,8 +55,15 @@
 }
 
 @keyframes pulse-glow {
-  0%   { opacity: 0.5; scale: 1; }
-  100% { opacity: 1;   scale: 1.15; }
+  0% {
+    opacity: 0.5;
+    scale: 1;
+  }
+
+  100% {
+    opacity: 1;
+    scale: 1.15;
+  }
 }
 
 .doc-badge {
@@ -454,14 +463,95 @@
   font-size: 0.82rem;
 }
 
+/* ── Live Face Detection UI ───────────────────────── */
+.btn-primary,
+.btn-secondary {
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.btn-primary {
+  background: var(--doc-gradient);
+  color: white;
+  box-shadow: 0 4px 15px var(--doc-accent-glow);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--doc-accent-glow);
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--doc-text);
+  border: 1px solid var(--doc-border);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--doc-text-muted);
+}
+
+.live-feed-container {
+  background: var(--doc-surface-2);
+  border-radius: var(--doc-radius);
+  border: 1px solid var(--doc-border);
+  padding: 24px;
+  margin-top: 1rem;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.status-offline {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--doc-text-muted);
+}
+
+.status-online {
+  background: rgba(0, 255, 0, 0.1);
+  color: #00ff00;
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}
+
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 640px) {
   .doc-toc ol {
     columns: 1;
   }
+
   .doc-section {
     padding: 28px 22px 24px;
   }
+
   .doc-hero {
     padding: 60px 20px 50px;
   }
