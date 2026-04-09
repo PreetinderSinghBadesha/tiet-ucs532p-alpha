@@ -196,9 +196,18 @@ export default function SkinReport({ result, onBack }) {
         </p>
       </div>
 
-      {/* Score ring */}
-      <div className="score-section">
-        <ScoreRing score={result.overall_score} />
+      {/* Score ring & Annotated Image */}
+      <div className="score-section" style={{ display: "flex", flexDirection: "column", gap: "24px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "32px", flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
+          <div>
+            <ScoreRing score={result.overall_score} />
+          </div>
+          {result.annotated_image && (
+            <div className="annotated-image-container" style={{ maxWidth: "240px", borderRadius: "14px", overflow: "hidden", boxShadow: "0 4px 16px rgba(0,0,0,0.12)", background: "#000" }}>
+              <img src={result.annotated_image} alt="Analyzed Face Regions" style={{ width: "100%", display: "block", aspectRatio: "3/4", objectFit: "cover" }} />
+            </div>
+          )}
+        </div>
         <p className="score-description">
           {result.overall_score >= 75
             ? "Your skin is in great health! Keep up the routine."

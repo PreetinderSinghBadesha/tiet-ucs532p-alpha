@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from utils.image_utils import decode_base64_image, resize_for_processing
+from utils.image_utils import decode_base64_image, resize_for_processing, generate_annotated_image_base64
 from utils.response_builder import build_success_response, build_error_response
 from cv_pipeline.face_detector import detect_face
 from cv_pipeline.region_extractor import extract_regions
@@ -96,6 +96,9 @@ def analyze():
     # ── 7. Recommendation generation ─────────────────────────────────────────
     recommendations, see_dermatologist = build_recommendations(features, scores, lifestyle)
 
+    # ── 8. Generate annotated image ───────────────────────────────────────────
+    annotated_image_b64 = generate_annotated_image_base64(image, bbox, landmarks)
+
     processing_ms = (time.perf_counter() - t_start) * 1000
 
     return jsonify(build_success_response(
@@ -104,6 +107,7 @@ def analyze():
         recommendations=recommendations,
         see_dermatologist=see_dermatologist,
         processing_ms=processing_ms,
+        annotated_image=annotated_image_b64,
     )), 200
 
 

@@ -784,3 +784,53 @@ Total: typically 300ms–2000ms depending on face size and hardware
 ---
 
 > **All CV processing happens in-process, in memory. No image is written to disk. No data leaves the machine.**
+
+---
+
+## 15. Visual Region Map
+
+The diagram below shows exactly which facial areas the pipeline crops and which analyzers consume each crop.
+
+![DERMA.ai CV Region Extraction Map](cv_region_map.png)
+
+### Region-to-Analyzer mapping
+
+| # | Region key | Landmark indices | Color in diagram | Analyzers |
+|---|---|---|---|---|
+| 1 | `forehead` | 17–26 (eyebrows) | 🔵 Light blue | Acne · Texture · **Wrinkle** |
+| 2 | `left_cheek` | 1–4, 31, 33 | 🟠 Coral | **Acne** · Texture · Dark circle (ref) |
+| 3 | `right_cheek` | 12–15, 35, 33 | 🟠 Coral | **Acne** · Texture · Dark circle (ref) |
+| 4 | `under_eye_left` | 37–41 (lower lid) | 🟣 Purple | **Dark Circle** |
+| 5 | `under_eye_right` | 43–47 (lower lid) | 🟣 Purple | **Dark Circle** |
+| 6 | `nose` | 27–35 (bridge→alae) | 🟡 Yellow | **Acne** · Texture |
+| 7 | `full_face` | bbox (x,y,w,h) | 🟢 Dashed green | **Tone** · Uniformity · Hyperpigmentation |
+
+### What each analyzer reads from which region
+
+```
+acne_detector.py
+  ├── forehead          → LAB A-channel redness + contour detection
+  ├── left_cheek        → LAB A-channel redness + contour detection
+  ├── right_cheek       → LAB A-channel redness + contour detection
+  └── nose              → LAB A-channel redness + contour detection
+
+texture_analyzer.py
+  ├── forehead          → LBP histogram + Laplacian variance
+  ├── left_cheek        → LBP histogram + Laplacian variance
+  ├── right_cheek       → LBP histogram + Laplacian variance
+  └── nose              → LBP histogram + Laplacian variance
+
+dark_circle_detector.py
+  ├── under_eye_left    → LAB L-channel luminance measurement
+  ├── under_eye_right   → LAB L-channel luminance measurement
+  ├── left_cheek        → REFERENCE baseline luminance only
+  └── right_cheek       → REFERENCE baseline luminance only
+
+wrinkle_detector.py
+  └── forehead          → CLAHE → Canny → HoughLinesP
+
+tone_analyzer.py
+  └── full_face         → HSV skin mask → H uniformity, S redness, V dark spots
+```
+
+> **All CV processing happens in-process, in memory. No image is written to disk. No data leaves the machine.**

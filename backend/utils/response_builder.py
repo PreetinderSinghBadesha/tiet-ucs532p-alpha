@@ -9,11 +9,13 @@ def build_success_response(
     recommendations: list,
     see_dermatologist: bool,
     processing_ms: float,
+    annotated_image: str = None,
 ) -> dict:
     """Assemble the full success response payload."""
     return {
         "success": True,
         "face_detected": True,
+        "annotated_image": annotated_image,
         "overall_score": scores["overall_score"],
         "condition_scores": {
             "acne":         scores["acne_score"],
